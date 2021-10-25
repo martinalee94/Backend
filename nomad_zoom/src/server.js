@@ -2,6 +2,7 @@ import express from "express";
 import http from 'http';
 import path from 'path';
 import {WebSocketServer} from 'ws';
+import {Server} from 'socket.io'
 const __dirname = path.resolve();
 
 const app = express();
@@ -16,15 +17,38 @@ const handleListen = () => {
 }
 //app.listen(3000);
 
-//http ws를 같은 서버에서 작동시킴 on the same port , but this is not necessary
-const server = http.createServer(app);
-const wss = new WebSocketServer({ server }); //http서버 위에 ws서버를 만든것 http://localhost/:3000 & ws://localhost/:3000
-server.listen(3000, handleListen);
+const httpserver = http.createServer(app);
+const wsServer = new Server(httpserver);
+httpserver.listen(3000, handleListen);
 
+
+wsServer.on("connection", (socket) =>{
+    socket.onAny((event)=>{
+        console.log('socket on event')
+    });
+    socket.on("enter_room", (roomName, done) =>{
+        socket.join(roomName); //방에 참가한다!
+        done();
+        socket.to(roomName).emit("welcome"); //방에 참가한 사람들에게 모두 보냄
+        // setTimeout(()=>{
+        //     done(); //front에서 보낸 함수를 콜함, 백엔드에서 initiated 그리고 프론트에서 실행
+        // },[2000])
+    });
+    socket.on("disconnecting", ()=>{
+        socket.rooms.forEach((room)=>{socket.to(room).emit("bye")});
+    });
+    socket.on("new_msg",(room, msg, done)=>{
+        socket.to(room).emit("new_msg", msg);
+        done();
+    })
+});
+
+
+/*---------------------------------------------------------------------------------
+//http ws를 같은 서버에서 작동시킴 on the same port , but this is not necessary
+const wss = new WebSocketServer({ httpserver }); //http서버 위에 ws서버를 만든것 http://localhost/:3000 & ws://localhost/:3000
 const sockets = [];
-function readMsg(){
-    JSON.parse
-}
+
 wss.on('connection', (socket)=>{
 //    console.log(socket);
     sockets.push(socket);
@@ -54,3 +78,4 @@ wss.on('connection', (socket)=>{
     });
 })
 
+ */
