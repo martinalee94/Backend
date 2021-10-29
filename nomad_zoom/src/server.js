@@ -21,26 +21,57 @@ const httpserver = http.createServer(app);
 const wsServer = new Server(httpserver);
 httpserver.listen(3000, handleListen);
 
+function publicRooms(){
+    const {
+        sockets:{
+            adapter:{sids, rooms}, //adapter로부터 sids와 rooms를 가져온다
+        },
+    } = wsServer;
+    //const sids = wsServer.sockets.adapter.sids;
+    //const rooms = wsServer.sockets.adapter.rooms;
+    const publicRooms = [];
+    rooms.forEach((_, key)=>{
+        if(sids.get(key) === undefined){
+            publicRooms.push(key);
+        }
+    });
+    return publicRooms;
+}
 
+function countRoom(roomName){
+    return wsServer.sockets.adapter.rooms.get(roomName)?.size;
+}
 wsServer.on("connection", (socket) =>{
+    socket['nickname'] = 'anonymous'
     socket.onAny((event)=>{
         console.log('socket on event')
     });
     socket.on("enter_room", (roomName, done) =>{
         socket.join(roomName); //방에 참가한다!
         done();
-        socket.to(roomName).emit("welcome"); //방에 참가한 사람들에게 모두 보냄
+        socket.to(roomName).emit("welcome",socket.nickname,countRoom(roomName)); //방에 참가한 사람들에게 모두 보냄
         // setTimeout(()=>{
         //     done(); //front에서 보낸 함수를 콜함, 백엔드에서 initiated 그리고 프론트에서 실행
         // },[2000])
+        wsServer.sockets.emit("room_change", publicRooms()); //서버의 모든 소켓에 메세지를 보냄
+
     });
     socket.on("disconnecting", ()=>{
-        socket.rooms.forEach((room)=>{socket.to(room).emit("bye")});
+        socket.rooms.forEach((room)=>{
+            socket.to(room).emit("bye",socket.nickname, countRoom(room)-1) //내가 이방을 떠나기 직전이기 때문에 나를 없애려면 -1해줘야함
+        });
+    });
+    socket.on("disconnect", ()=>{
+        wsServer.sockets.emit("room_change", publicRooms()); //서버의 모든 소켓에 메세지를 보냄
     });
     socket.on("new_msg",(room, msg, done)=>{
-        socket.to(room).emit("new_msg", msg);
+        socket.to(room).emit("new_msg", `${socket.nickname} : ${msg}`);
         done();
+    });
+    socket.on('nickname', (nickname) =>{
+        socket["nickname"] = nickname;
     })
+
 });
 
 

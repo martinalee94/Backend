@@ -14,12 +14,19 @@ function addMessage(message){
 }
 function handleMessageSubmit(event){
     event.preventDefault();
-    const input = room.querySelector('input');
+    const input = room.querySelector('#msg input');
     const value = input.value;
     socket.emit("new_msg", roomName, input.value, ()=>{  //서버로 메세지보냄
         addMessage(`You: ${value}`);
     });
     input.value="";
+}
+function handleNicknameSubmit(event){
+    event.preventDefault();
+    const input = room.querySelector('#name input');
+    const value = input.value;
+    socket.emit('nickname', value);
+
 }
 function showRoom(){
     welcome.hidden = true;
@@ -27,8 +34,10 @@ function showRoom(){
     const h3 = room.querySelector("h3");
     h3.innerText = `Room ${roomName}`;
     //console.log("server is done!"); //프론트에서 실행한다
-    const form = room.querySelector('form');
-    form.addEventListener('submit', handleMessageSubmit);
+    const msgForm = room.querySelector('#msg');
+    const nameForm = room.querySelector('#name');
+    msgForm.addEventListener('submit', handleMessageSubmit);
+    nameForm.addEventListener('submit', handleNicknameSubmit);
 };
 
 function handleRoomSubmit(event){
@@ -42,17 +51,32 @@ function handleRoomSubmit(event){
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on('welcome', ()=>{
-    addMessage("Someone joined");
+socket.on('welcome', (user, newCount)=>{
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
+    addMessage(`${user} joined!`);
 });
 
-socket.on('bye',()=>{
-    addMessage("Someone left")
+socket.on('bye',(left, newCount)=>{
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
+    addMessage(`${left} left`)
 });
 
 socket.on("new_msg", addMessage);
 
-
+socket.on("room_change", (rooms)=>{
+    const roomList = welcome.querySelector('ul');
+    roomList.innerHTML = "";
+    if(rooms.length === 0){  //room이없을때 모든것을 비운다!
+        return;
+    }
+    rooms.forEach((room)=>{
+      const li = document.createElement("li");
+      li.innerText = room;
+      roomList.append(li);  
+    });
+});
 
 
 
