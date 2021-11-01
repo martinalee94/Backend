@@ -80,7 +80,13 @@ function handleCameraClick(){
 }
 
 async function handleCameraChange(){
-    await getMedia(camerasSelect.value);
+    await getMedia(camerasSelect.value); 
+    if(myPeerConnection){
+        const videoTrack = myStream.getVideoTracks()[0]; //this is for me
+        const videoSender = myPeerConnection.getSenders().find(sender => sender.track.kind === "video");
+        //peer로 보내진 media stream을 컨트롤 할 수 있는 것 = sender
+        videoSender.replaceTrack(videoTrack); //this is for peer display
+    }
 }
 muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
