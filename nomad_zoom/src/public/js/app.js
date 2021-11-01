@@ -139,7 +139,17 @@ socket.on('ice', ice =>{
 })
 //rtc code
 function makeConnection(){
-    myPeerConnection = new RTCPeerConnection(); //ptp 연결만듦
+    myPeerConnection = new RTCPeerConnection({
+        iceServers:[{
+            urls: [ //stun server : 장치가 알아야 할 공용주소를 알려주는 서버 between different network
+                "stun:stun.l.google.com:19302",
+                "stun:stun1.l.google.com:19302",
+                "stun:stun2.l.google.com:19302",
+                "stun:stun3.l.google.com:19302",
+                "stun:stun4.l.google.com:19302",
+            ]
+        }]
+    }); //ptp 연결만듦
     myPeerConnection.addEventListener("icecandidate", handleIce);
     myPeerConnection.addEventListener("addstream", handleAddStream);
     myStream.getTracks().forEach(track=>myPeerConnection.addTrack(track, myStream)); //양쪽 비디오 오디오 정보를 받아왔음
