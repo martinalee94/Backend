@@ -21,3 +21,6 @@ const wsServer = new Server(httpserver);
 httpserver.listen(3000, handleListen);
 
 
+wsServer.on("connection", (socket)=>{
+    
+})

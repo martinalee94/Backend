@@ -5,8 +5,19 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
+        link(rel="stylesheet", href="/public/js/style.css")
+    style 
+        inclue style.css
     body 
-        h1 it works!
+        div#header
+            img#banner(src="/public/assets/banner.png", alt="banner")
+            h2 온라인 화상 회의실 
+        div#call
+            div#myStream
+                video#myFace(autoplay, playsinline, width="400", height="400")
+                select#cameras
+                button#mic 마이크 끄기
+                button#cam 카메라 끄기
 
 script(src="/socket.io/socket.io.js") //-프론트엔드에 소켓추가
 script(src="/public/js/app.js") 
