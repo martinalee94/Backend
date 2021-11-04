@@ -15,9 +15,12 @@ html(lang="en")
         div#call
             div#myStream
                 video#myFace(autoplay, playsinline, width="400", height="400")
-                select#cameras
-                button#mic 마이크 끄기
-                button#cam 카메라 끄기
+                div
+                    button#mic
+                        img(src="/public/assets/unmute.png", alt="microphone")
+                    button#cam 
+                        img(src="/public/assets/camon.png", alt="camera")
+                    select#cameras
 
 script(src="/socket.io/socket.io.js") //-프론트엔드에 소켓추가
 script(src="/public/js/app.js") 
