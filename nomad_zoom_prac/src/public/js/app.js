@@ -10,15 +10,24 @@ let muted = false;
 let cameraOff = false;
 
 
-async function getMedia(){
+async function getMedia(deviceId){
+    const initialConstraints ={ //맨처음 getmedia불렸을때, 카메라 설정이 아무것도 없을때
+        audio : true,
+        video:{ facingMode : 'user'},
+    }
+    const cameraConstraints={
+        audio:true,
+        video:{deviceId: {exact:deviceId}},  //specific camera
+    }
     try{
-        myStream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true,
-        });
+        myStream = await navigator.mediaDevices.getUserMedia(
+            deviceId? cameraConstraints : initialConstraints //deviceid가 존재하지 않는 처음 호출에서는 initial값을 준다
+        );
         //console.log(myStream);
         myFace.srcObject = myStream;
-        await getCameras();
+        if(!deviceId){ //맨처음 deviceid가 없는 상황에서만 카메라 목록을 가져온다
+            await getCameras();
+        }
     } catch(e){
         console.log(e)
     }
@@ -30,10 +39,14 @@ async function getCameras(){
     try{
         const devices = await navigator.mediaDevices.enumerateDevices();
         const cameras = devices.filter(device => device.kind === 'videoinput')
+        const currentCamera = myStream.getVideoTracks()[0]; 
         cameras.forEach((camera)=>{
             const option = document.createElement('option');
             option.value = camera.deviceId;
             option.innerText = camera.label;
+            if(currentCamera.label === camera.label){
+                option.selected = true;  //내가 현재 사용하고 있는 camera를 셀렉트 옵션에서 보여주도록 설정
+            }
             camerasSelect.appendChild(option);
         })
         console.log("devices", devices)
@@ -68,5 +81,13 @@ function handleCamStatus(event){
     }
     cameraOff = !cameraOff;
 }
+
+async function handleCameraChange(event){
+    event.preventDefault();
+    await getMedia(camerasSelect.value);
+}
+
+
 muteBtn.addEventListener("click", handleMuteStatus);
 cameraBtn.addEventListener('click', handleCamStatus);
+camerasSelect.addEventListener("input", handleCameraChange);
