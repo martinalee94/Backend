@@ -22,13 +22,18 @@ httpserver.listen(3000, handleListen);
 
 
 wsServer.on("connection", (socket)=>{
-    socket.on('join_room', (roomName, done) =>{
+    socket.on('join_room', (roomName) =>{
         socket.join(roomName);
         socket.to(roomName).emit('welcome');
-        done();
+       // done(); media를 가져오는 속도보다 웹소켓이 빨라서 클라이언트에서 미리호출함
     });
     socket.on('offer', (offer, roomName)=>{
         socket.to(roomName).emit('offer', offer);
     })
-
+    socket.on('answer', (answer, roomName)=>{
+        socket.to(roomName).emit('answer',answer);
+    })
+    socket.on("ice", (ice, roomName)=>{
+        socket.to(roomName).emit("ice", ice);
+    });
 })

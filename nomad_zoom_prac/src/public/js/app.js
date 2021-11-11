@@ -86,9 +86,15 @@ function handleCamStatus(event){
     cameraOff = !cameraOff;
 }
 
-async function handleCameraChange(event){
-    event.preventDefault();
-    await getMedia(camerasSelect.value);
+async function handleCameraChange(){
+    await getMedia(camerasSelect.value); //함수가 호출되면 새로운 media stream을 받음
+    if(myPeerConnection){//myStream은 내 화면에서 스트림
+        const videoTrack = myStream.getVideoTracks()[0] //새로운 비디오 트랙 받는다
+        //sender는 peer로 보내진 media stream track을 컨트롤하게 도와줌
+        //sender에서 video를 보내는 sender만 골라냄(sender의 track에서 kind가 'video'인 것들만)
+        const videoSender = myPeerConnection.getSenders().find(sender => sender.track.kind === 'video'); 
+        videoSender.replaceTrack(videoTrack) //video 재설정
+    }
 }
 
 
@@ -101,7 +107,7 @@ camerasSelect.addEventListener("input", handleCameraChange);
 //welcome page =================================================
 const welcomeForm = welcome.querySelector('form');
 
-async function startMedia(){
+async function initCall(){
     const entry = document.querySelector('.container');
     entry.hidden = true;
     call.hidden = false;
@@ -113,25 +119,60 @@ async function handleWelcomeSubmit(event){
     event.preventDefault();
     const input = welcomeForm.querySelector('input');
     roomName = input.value;
-    socket.emit('join_room', roomName, startMedia)
+    await initCall(); //양방향 통신이 빠르게 일어나서 peer의 정보를 받기도 전에 정보를 셋팅하려고하므로, 우선 call한다 
+    socket.emit('join_room', roomName)
     input.value ="";
 }
 welcomeForm.addEventListener('submit',handleWelcomeSubmit);
 
 
+
 //socket code =======================================================
-socket.on('welcome', async ()=>{
+socket.on('welcome', async ()=>{ //brave가실행
     const offer = await myPeerConnection.createOffer();
-    myPeerConnection.setLocalDescription(offer);
+    myPeerConnection.setLocalDescription(offer); //내정보를 셋팅해서 peer에게 전달
     socket.emit('offer', offer, roomName);
 });
 
-socket.on('offer', (offer)=>{
-    console.log(offer)
-})
-//rtc code ==============
+socket.on('offer',  async (offer)=>{  //firefox 가 실행
+    myPeerConnection.setRemoteDescription(offer); //내가 아닌 peer의 정보를 셋팅
+    const answer = await myPeerConnection.createAnswer();
+    myPeerConnection.setLocalDescription(answer); 
+    socket.emit('answer', answer, roomName); //firefox 가 답변
 
+})
+
+socket.on('answer', (answer)=>{
+    myPeerConnection.setRemoteDescription(answer);  //brave 가 firefox한테 받은 답변으로 셋팅
+
+})
+
+socket.on('ice', (ice)=>{ //다른 브라우저의 ice candidate를 받음, offer/answer를 받을 때 candidate도 받음!
+    myPeerConnection.addIceCandidate(ice); //받아서 저장함
+})
+
+
+
+
+//rtc code ==============
 function makeConnection(){
-    myPeerConnection = new RTCPeerConnection();
-    myStream.getTracks().forEach(track=>{myPeerConnection.addTracks(track, myStream)})
+    myPeerConnection = new RTCPeerConnection();  //create peer to peer connection
+    //서로다른 브라우저간 소통하게 만들어줌
+    //각 브라우저에서 ice candidate를 만든다, 각자 본인이 어떻게 다른 브라우저와 소통하는지 알려주는 것
+    myPeerConnection.addEventListener("icecandidate", handleIce); 
+    //채팅방에 들어온 사람 stream을 추가해준다
+    myPeerConnection.addEventListener("addstream", handleAddStream);
+    myStream.getTracks().forEach((track)=>{myPeerConnection.addTrack(track, myStream)}) //peer연결에 track을 추가
+}
+
+function handleIce(data){
+    //ice candidate를 받으면 서버로 보냄, 다른 브라우저에서 서로 candidate를 주고받음
+    socket.emit('ice', data.candidate, roomName); 
+    console.log('got ice!')
+    console.log(data)
+}
+
+function handleAddStream(data){ //got an stream from my peer
+    const peersStream = document.querySelector('#peerFace');
+    peersStream.srcObject = data.stream; //내가 받은 remote stream으로 peerface video에 넣어준다
 }

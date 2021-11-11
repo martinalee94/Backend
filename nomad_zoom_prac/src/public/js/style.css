@@ -42,13 +42,13 @@ body{
 input[type=text] {
     background-color: #1A2226;
     border: none;
-    border-bottom: 2px solid #0DB8DE;
+    border-bottom: 1px solid #b34af8;
     border-top: 0px;
     border-radius: 0px;
     font-weight: bold;
     outline: 0;
     margin-bottom: 20px;
-    padding-left: 0px;
+    padding-bottom: 5px;
     color: #ECF0F5;
 }
 
@@ -79,7 +79,7 @@ input[type=text] {
     color: #ECF0F5;
 }
 .form-control:focus {
-    border-bottom: 2px solid #0DB8DE;
+    border-bottom: 1px solid #b34af8;
 
 }
 
@@ -109,7 +109,6 @@ input:-webkit-autofill:active {
 .btn-style {
     width: 20vw;
     height:3rem;
-    border-color: #0DB8DE;
     color: #1d5a68;
     border-radius: 0px;
     font-weight: bold;
@@ -118,7 +117,9 @@ input:-webkit-autofill:active {
 }
 
 .btn-style:hover {
-    background-color: #0DB8DE;
+    
+    background-color: #b24af883;
+    color:cornsilk;
     right: 0px;
 }
 

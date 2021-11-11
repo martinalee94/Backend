@@ -10,7 +10,7 @@ html(lang="en")
         link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
         link(href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet")
     style 
-        inclue style.css
+        include style.css
     body 
         div.container
             div.login-box
@@ -27,17 +27,7 @@ html(lang="en")
                                 input#userName.form-control(placeholder="", required, type="text")
                             div.enterbtn
                                 button.btn-style Enter Room
-                //div#header
-                //    img#banner(src="/public/assets/banner.png", alt="banner")
-                //    h2 온라인 화상 회의실
-     
-                    div#welcome 
-                        div#form
-                            label(for="room") Room name 
-                            input#roomName(placeholder="", required, type="text")
-                            label(for="username") User name
-                            input#userName(placeholder="", required, type="text")
-                            button Enter Room
+
         div#call
             div#myStream
                 video#myFace(autoplay, playsinline, width="400", height="400")
@@ -47,6 +37,9 @@ html(lang="en")
                     button#cam 
                         img(src="/public/assets/camon.png", alt="camera")
                     select#cameras
+            div#peerStream
+                video#peerFace(autoplay, playsinline, width="400", height="400")
+    
 
 script(src="/socket.io/socket.io.js") //-프론트엔드에 소켓추가
 script(src="/public/js/app.js") 
