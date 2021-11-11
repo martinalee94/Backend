@@ -9,8 +9,7 @@ html(lang="en")
         link(rel="preconnect" href="https://fonts.googleapis.com")
         link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
         link(href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet")
-    style 
-        include style.css
+
     body 
         div.container
             div.login-box
@@ -38,8 +37,8 @@ html(lang="en")
                         img(src="/public/assets/camon.png", alt="camera")
                     select#cameras
             div#peerStream
-                video#peerFace(autoplay, playsinline, width="400", height="400")
+                
     
 
-script(src="/socket.io/socket.io.js") //-프론트엔드에 소켓추가
+script(src="/socket.io/socket.io.js")
 script(src="/public/js/app.js") 

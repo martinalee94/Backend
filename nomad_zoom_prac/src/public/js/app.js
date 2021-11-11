@@ -117,8 +117,10 @@ async function initCall(){
 
 async function handleWelcomeSubmit(event){
     event.preventDefault();
-    const input = welcomeForm.querySelector('input');
+    const input = welcomeForm.querySelector('#roomName');
     roomName = input.value;
+    const input = welcomeForm.querySelector('#userName');
+    userName = input.value;
     await initCall(); //양방향 통신이 빠르게 일어나서 peer의 정보를 받기도 전에 정보를 셋팅하려고하므로, 우선 call한다 
     socket.emit('join_room', roomName)
     input.value ="";
@@ -173,6 +175,8 @@ function handleIce(data){
 }
 
 function handleAddStream(data){ //got an stream from my peer
+    const peerDiv = document.querySelector('#peerStream');
+    peerDiv.innerHTML = "<div><video id='peerFace' autoplay playsinline width='400' height='400' /></div>";
     const peersStream = document.querySelector('#peerFace');
     peersStream.srcObject = data.stream; //내가 받은 remote stream으로 peerface video에 넣어준다
 }
