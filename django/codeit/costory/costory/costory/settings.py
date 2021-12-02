@@ -1,9 +1,10 @@
 from pathlib import Path
 import os, environ
 
-env = environ.Env(
-    DEBUG = (bool, False)
-)
+# env = environ.Env(
+#     DEBUG = (bool, False)
+# )
+DEBUG = True
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

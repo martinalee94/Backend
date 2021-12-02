@@ -1,3 +1,4 @@
 .venv
 costory/.env
 costory/costory/__pycache__
+costory/posts/__pycache__
