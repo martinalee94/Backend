@@ -9,9 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-environ.Env.read_env(
-    env_file = os.path.join(BASE_DIR, '.env')
-)
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
@@ -27,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'posts',
 ]
 
 MIDDLEWARE = [
@@ -60,9 +59,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'costory.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -74,9 +70,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Seoul'
+TIME_ZONE = 'Asia/Seoul' #set as seoul
 
 USE_I18N = True
 
@@ -107,13 +100,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
