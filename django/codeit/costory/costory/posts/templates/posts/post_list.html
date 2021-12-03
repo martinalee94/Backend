@@ -1,0 +1,10 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block post_container %}
+    <h1>글 목록 페이지 입니다.</h1>
+    {% for post in posts%}
+        {{post.title}} {{post.dt_created}} {{post.dt_modified}}<br>
+        
+    {% endfor %}
+{% endblock post_container %}
