@@ -1,0 +1,4 @@
+.env
+mindnote/mindnote/__pycache__
+mindnote/diary/migrations/__pycache__
+mindnote/diary/__pycache__
