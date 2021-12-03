@@ -16,10 +16,8 @@ def post_detail(request, post_id):
 
 def post_create(request):
     if request.method == "POST":
-        title = request.POST['title']
-        content = request.POST['content']
-        new_post = Post(title = title, content = content)
-        new_post.save()
+        post_form = PostForm(request.POST)
+        new_post = post_form.save()
         return redirect('post-detail', post_id = new_post.id)
     elif request.method == "GET":
         post_form = PostForm()
