@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Costory :: 코스토리</title>
+    {% block css %}
+    {% endblock css %}
+    <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/earlyaccess/nanummyeongjo.css">
 </head>
 <body>
-    {% block post_container %}
-    {% endblock post_container %}
+    <div id="wrap">
+        <div id="header">
+            <div id="nav">
+                <div class="logo">
+                    <a href={% url 'post-list' %}><img src={% static 'posts/images/logo.png' %}></a>
+                </div>
+            </div>
+            {% block post_header %}
+            {% endblock post_header %}
+        </div>
+        {% block logo_text %}
+        {% endblock logo_text %}
+        <div id="content">
+            <div class="container">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+        <div id="footer">
+            <div class="footer">
+                <p>Costory</p>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

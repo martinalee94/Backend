@@ -2,3 +2,5 @@
 costory/.env
 costory/costory/__pycache__
 costory/posts/__pycache__
+costory/posts/static/posts/images
+costory/posts/static/posts/css

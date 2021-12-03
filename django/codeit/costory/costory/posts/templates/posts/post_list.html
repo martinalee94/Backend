@@ -1,27 +1,29 @@
 {% extends './base.html' %}
 {% load static %}
 
-{% block post_container %}
-    <h1>포스트 리스트</h1>
-    <hr>
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">글 번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">생성일</th>
-            <th scope="col">수정일</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for post in posts%}
-          <tr>
-            <th scope="row">{{post.id}}</th>
-            <td><a href={% url 'post-detail' post.id %}>{{post.title}}</a></td>
-            <td>{{post.dt_created}}</td>
-            <td>{{post.dt_modified}}</td>
-          </tr>
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'posts/css/post_list.css' %}">
+{% endblock css %}
+
+{% block logo_text %}
+    <div id="header">
+        <div class="container">
+            <h1><img src="{% static 'posts/images/headertxt.png' %}"></h1>
+        </div>
+    </div>
+{% endblock logo_text %}
+
+{% block content %}
+    <div class="post_container">
+        {% for post in posts %}
+        <div class="post">
+            <a href="{% url 'post-detail' post.id %}">         
+                <h2 class="title">{{post.title}}</h2>
+                <p class="date">{{post.dt_created}}</p>
+                <p class="text">{{post.content | slice:":100"}}</p>
+            </a>
+        </div>
         {% endfor %}
-        </tbody>
-      </table>
-{% endblock post_container %}
+    </div>
+{% endblock content %}
