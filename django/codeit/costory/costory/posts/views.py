@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import PostForm
 from .models import Post
@@ -15,6 +15,13 @@ def post_detail(request, post_id):
     return render(request, 'posts/post_detail.html', context)
 
 def post_create(request):
-    post_form = PostForm()
-    context = {'form': post_form}
-    return render(request, 'posts/post_form.html', context)
+    if request.method == "POST":
+        title = request.POST['title']
+        content = request.POST['content']
+        new_post = Post(title = title, content = content)
+        new_post.save()
+        return redirect('post-detail', post_id = new_post.id)
+    elif request.method == "GET":
+        post_form = PostForm()
+        context = {'form': post_form}
+        return render(request, 'posts/post_form.html', context)
