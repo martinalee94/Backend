@@ -2,9 +2,26 @@
 {% load static %}
 
 {% block post_container %}
-    <h1>글 목록 페이지 입니다.</h1>
-    {% for post in posts%}
-        {{post.title}} {{post.dt_created}} {{post.dt_modified}}<br>
-        
-    {% endfor %}
+    <h1>포스트 리스트</h1>
+    <hr>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">글 번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">생성일</th>
+            <th scope="col">수정일</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for post in posts%}
+          <tr>
+            <th scope="row">{{post.id}}</th>
+            <td><a href={% url 'post-detail' post.id %}>{{post.title}}</a></td>
+            <td>{{post.dt_created}}</td>
+            <td>{{post.dt_modified}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
 {% endblock post_container %}
