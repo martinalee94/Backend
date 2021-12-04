@@ -2,3 +2,5 @@
 mindnote/mindnote/__pycache__
 mindnote/diary/migrations/__pycache__
 mindnote/diary/__pycache__
+mindnote/diary/static/diary/css
+mindnote/diary/static/diary/image
