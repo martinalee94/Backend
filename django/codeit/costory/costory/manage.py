@@ -19,5 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
-    dotenv.read_dotenv()  #read .env
+    dotenv.load_dotenv()  #read .env
     main()
