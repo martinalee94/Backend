@@ -1,13 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-    {% endblock %}
-</body>
-</html>
+    <head>
+        <title>Mind Note</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href={% static 'diary/css/styles.css' %}>
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumBarunpen.woff">
+    </head>
+    <body>
+        <div class="menu">
+            <h1><a href={% url 'page-list' %}><img src="{% static 'diary/image/logo02.svg' %}"></a></h1>
+            <ul>
+                <li><a href={% url 'page-list' %}>모아보기</a></li>
+                <li><a href={% url 'info' %}>감정일기란</a></li>
+                <li><a href="#">일기쓰기</a></li>
+            </ul>
+        </div>
+
+        {% block content %}
+        {% endblock content %}
+
+    </body>

@@ -1,0 +1,33 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- page_detail.html -->
+<div class="wrap-notetext">
+    <div class="notetext">
+        <div class="text-box">
+            <h2>{{page.title}}</h2>
+            <div class="state">
+                <p>감정 상태</p>
+                <span>{{page.feeling}}</span>
+            </div>
+            <div class="score">
+                <p>감정 점수</p>
+                <span>{{page.score}}점</span>
+            </div> 
+            <div class="date">
+            <span>{{page.dt_created}}</span>
+            </div>
+            <div class="detail">{{page.content|linebreaksbr}}</div>
+            <div class="notetext-btn">
+                <ul>
+                    <li><a href="#">삭제하기</a></li>
+                    <li><a href="#">수정하기</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
