@@ -2,11 +2,12 @@
 
 {% block content %}
 
+<div class="wrap-mindnote">
 
     <form action="" method='POST'> {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="작성하기">
     </form>
 
-
+</div>
 {% endblock content %}
