@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
-
+from django.http.response import Http404
+from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404
 from .forms import PostForm
 from .models import Post
 
@@ -10,7 +11,11 @@ def post_list(request):
     return render(request, 'posts/post_list.html', context)
 
 def post_detail(request, post_id):
-    post = Post.objects.get(id = post_id)
+    # try:
+    #     post = Post.objects.get(id = post_id)
+    # except Post.DoesNotExist:
+    #     raise Http404()
+    post = get_object_or_404(Post, id=post_id)
     context = {'post':post}
     return render(request, 'posts/post_detail.html', context)
 
@@ -26,7 +31,9 @@ def post_create(request):
     return render(request, 'posts/post_form.html', {'form': post_form})
 
 def post_update(request, post_id):
-    post = Post.objects.get(id = post_id)
+    # post = Post.objects.get(id = post_id)
+    post = get_object_or_404(Post, id=post_id)
+
     if request.method == 'GET':
         post_form = PostForm(instance = post) #기존 post의 정보가 새로 보내주는 post폼에 붙어서 간다
         context = {'form': post_form}
@@ -38,7 +45,9 @@ def post_update(request, post_id):
             return redirect('post-detail', post_id = post.id)
 
 def post_delete(request, post_id):
-    post = Post.objects.get(id = post_id)
+    # post = Post.objects.get(id = post_id)
+    post = get_object_or_404(Post, id=post_id)
+
     if request.method == 'POST':
         post.delete()
         return redirect('post-list')
