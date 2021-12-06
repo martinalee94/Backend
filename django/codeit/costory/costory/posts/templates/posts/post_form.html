@@ -1,13 +1,32 @@
-<form action="" method = "POST">{% csrf_token %}
-    <h3>제목</h3>
-    <p>{{form.title}}</p>
-    {% for error in form.title.errors %}
-        <p>{{error}}</p>
-    {% endfor %}
-    <h3>내용</h3>
-    <p>{{form.content}}</p>
-    {% for error in form.content.errors %}
-        <p>{{error}}</p>
-    {% endfor %}
-    <input type="submit" value="전송" />
-</form>
+{% extends './base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'posts/css/post_form.css' %}">
+{% endblock css %}
+
+{% block post_header %}
+<div class='container'>
+    <h1>글쓰기</h1>
+</div>
+{% endblock post_header %}
+
+{% block content %}
+    <form action="" method = "POST">{% csrf_token %}
+        <div class="submit"><input type="submit" value="작성완료" /></div>
+
+        <div class='editor'>
+            <p>{{form.title}}</p>
+            {% for error in form.title.errors %}
+                <p class="error">{{error}}</p>
+            {% endfor %}
+            <p>{{form.content}}</p>
+            {% for error in form.content.errors %}
+                <p class="error">{{error}}</p>
+            {% endfor %}
+        </div>
+    </form>
+    <div class="btn_back">
+        <a href="{% url 'post-list' %}">돌아가기</a>
+    </div>
+{% endblock content %}

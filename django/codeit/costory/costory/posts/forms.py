@@ -9,6 +9,11 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+        widgets = {'title': forms.TextInput(attrs={
+            'class':'title',
+            'placeholder':'제목을 입력해 주세요',
+            'content': forms.Textarea(attrs={'placeholder':'내용을 입력하세요'})
+            })}
         #fields = '__all__' 모델의 모든 컬럼을 불러오기
 
     def clean_title(self): #하나의 필드만 유효성 검증을 할 수 있음

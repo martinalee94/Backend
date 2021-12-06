@@ -24,3 +24,17 @@ def post_create(request):
         post_form = PostForm()
     
     return render(request, 'posts/post_form.html', {'form': post_form})
+
+def post_update(request, post_id):
+    post = Post.objects.get(id = post_id)
+    if request.method == 'GET':
+        post_form = PostForm(instance = post) #기존 post의 정보가 새로 보내주는 post폼에 붙어서 간다
+        context = {'form': post_form}
+        return render(request, 'posts/post_form.html', context)
+    elif request.method == 'POST':
+        post_form = PostForm(request.POST, instance = post) #기존 정보와 새로운 정보를 묶음
+        if post_form.is_valid():
+            post_form.save()
+            return redirect('post-detail', post_id = post.id)
+
+    
