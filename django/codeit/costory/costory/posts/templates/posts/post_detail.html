@@ -25,6 +25,7 @@
         <div class="btn_list"><a href="{% url 'post-list' %}">목록으로</a></div>
         <div class='right-btn'>
             <div class='btn_modify'><a href="{% url 'post-update' post.id %}">수정하기</a></div>
+            <div class='btn_delete'><a href="{% url 'post-delete' post.id %}">삭제하기</a></div>
         </div>
     </div>
 {% endblock content %}

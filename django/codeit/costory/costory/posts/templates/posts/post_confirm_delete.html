@@ -1,0 +1,18 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'posts/css/post_confirm_delete.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="confirm">
+    <p class="title">[{{post.title}}]</p>
+    <p>삭제하시겠습니까?</p>
+    <form method="POST">{% csrf_token %}
+        <div class="confirm_btn">
+            <input type="submit" value="삭제하기">
+        </div>
+    </form>
+</div>
+{% endblock content %}

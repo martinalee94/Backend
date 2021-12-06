@@ -37,4 +37,11 @@ def post_update(request, post_id):
             post_form.save()
             return redirect('post-detail', post_id = post.id)
 
+def post_delete(request, post_id):
+    post = Post.objects.get(id = post_id)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post-list')
+    elif request.method =="GET":
+        return render(request, 'posts/post_confirm_delete.html', {'post':post})
     
