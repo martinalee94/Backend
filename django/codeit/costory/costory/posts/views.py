@@ -1,9 +1,11 @@
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404
+from django.core.paginator import Paginator
+from django.views import View
+
 from .forms import PostForm
 from .models import Post
-from django.core.paginator import Paginator
 
 # Create your views here.
 def post_list(request):
@@ -26,17 +28,17 @@ def post_detail(request, post_id):
     context = {'post':post}
     return render(request, 'posts/post_detail.html', context)
 
-def post_create(request):
-    if request.method == "POST":
+class PostCreateView(View):
+    def get(self, request):
+        post_form = PostForm()  
+        return render(request, 'posts/post_form.html', {'form': post_form})       
+    
+    def post(self, request):
         post_form = PostForm(request.POST)
         if post_form.is_valid():
             new_post = post_form.save()
             return redirect('post-detail', post_id = new_post.id)
-    elif request.method == "GET":
-        post_form = PostForm()
     
-    return render(request, 'posts/post_form.html', {'form': post_form})
-
 def post_update(request, post_id):
     # post = Post.objects.get(id = post_id)
     post = get_object_or_404(Post, id=post_id)
