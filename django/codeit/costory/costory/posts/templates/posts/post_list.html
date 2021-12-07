@@ -16,9 +16,9 @@
 
 {% block content %}
     <div class='btn_post'><a href={% url 'post-create' %}>글쓰기</a></div>
-    {% if posts %}
+    {% if page.object_list %}
         <div class="post_container">
-            {% for post in posts %}
+            {% for post in page.object_list %}
             <div class="post">
                 <a href="{% url 'post-detail' post.id %}">         
                     <h2 class="title">{{post.title}}</h2>
@@ -27,6 +27,20 @@
                 </a>
             </div>
             {% endfor %}
+        </div>
+
+        <div class="paging">
+            {% if page.has_previous %}
+                <a href="?page=1" class="first">first</a>
+                <a href="?page={{ page.previous_page_number }}" class="prev">prev</a>
+            {% endif %}
+                <span>
+                    <p> {{page.number}} / {{page.paginator.num_pages}}</p>
+                </span>
+            {% if page.has_next %}
+                <a href="?page={{ page.next_page_number }}" class="next">next</a>
+                <a href="?page={{page.paginator.num_pages}}" class="last">last</a>
+            {% endif %}
         </div>
     {% else %}
         <div class='blank'>
