@@ -1,4 +1,3 @@
 .venv
 seetoons/.env
-seetoons/seetoons/__pycache__
-seetoons/webtoons/__pycache__
+__pycache__/

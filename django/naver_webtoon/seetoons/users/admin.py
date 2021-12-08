@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Webtoons
+from .models import User
 
-admin.site.register(Webtoons)
+admin.site.register(User)

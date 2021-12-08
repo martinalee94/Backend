@@ -1,6 +1,6 @@
 import requests, json
 from bs4 import BeautifulSoup
-import os
+import os, dotenv
 import pymysql.cursors
 
 def insertsql_from_json():
@@ -52,7 +52,7 @@ def insertsql_from_json():
     else:
         print(response.status_code)
 
-
+dotenv.load_dotenv()
 insertsql_from_json()   
 
 
