@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from rest_framework import routers
+from webtoons.views import WebtoonListView
+
+# router = routers.DefaultRouter()
+# router.register(r'webtoons', views.WebtoonListView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('webtoons.urls'))
+    path('webtoons/',include('webtoons.urls')),
 ]

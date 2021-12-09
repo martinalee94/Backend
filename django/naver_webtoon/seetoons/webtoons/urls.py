@@ -17,5 +17,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.WebtoonListView.as_view(), name='webtoon-index'),
+    path('', views.WebtoonListView.as_view(), name='webtoon list'),
 ]

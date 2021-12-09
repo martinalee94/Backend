@@ -1,9 +1,15 @@
 from django.shortcuts import render
 from django.views import View
-
+from rest_framework import serializers, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from .models import Webtoons
+from webtoons.api.serializers import WebtoonSerializer
+
+
 # Create your views here.
-class WebtoonListView(View):
+class WebtoonListView(APIView):
     def get(self, request):
-        webtoons = Webtoons.objects.all()
-        return render(request, 'webtoons/index.html', {'webtoons':webtoons})
+        queryset = Webtoons.objects.all()
+        serializer = WebtoonSerializer(queryset, many=True)
+        return Response(serializer.data)
