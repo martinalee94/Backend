@@ -159,6 +159,12 @@ ACCOUNT_SESSION_REMEMBER = True #브라우저를 꺼도 유저를 계속 기억�
 #python manage.py clearsessions로 서버에 쌓인 세션을 수동으로 지워주는 명령어
 ACCOUNT_SIGNUP_FORM_CLASS = 'coplate.forms.SignupForm'
 ACCOUNT_PASSWORD_INPUT_RENDER_VALUE = True #비밀번호 유지
+
+ACCOUNT_EMAIL_VARIFICATION = 'optional' #default:optional / mandatory none
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'account_email_confirmation_done'
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'account_email_confirmation_done'
+
 #Email settings
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
