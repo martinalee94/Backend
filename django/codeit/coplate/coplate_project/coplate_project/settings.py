@@ -108,13 +108,16 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'coplate.validators.CustomPasswordValidator',
+    },
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko'
 
 TIME_ZONE = 'Asia/Seoul'
 
@@ -155,7 +158,7 @@ ACCOUNT_SESSION_REMEMBER = True #브라우저를 꺼도 유저를 계속 기억�
 #SESSION_COOKIE_AGE = 3600 #세션 유지기간
 #python manage.py clearsessions로 서버에 쌓인 세션을 수동으로 지워주는 명령어
 ACCOUNT_SIGNUP_FORM_CLASS = 'coplate.forms.SignupForm'
-
+ACCOUNT_PASSWORD_INPUT_RENDER_VALUE = True #비밀번호 유지
 #Email settings
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
