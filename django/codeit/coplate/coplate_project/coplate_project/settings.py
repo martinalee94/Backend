@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 ]
 
+SITE_ID = 1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -145,7 +147,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 ACCOUNT_SIGNUP_REDIRECT_URL = "index"
 LOGIN_REDIRECT_URL = 'index'
-SITE_ID = 1
+ACCOUNT_LOGOUT_ON_GET = True #로그아웃 확인페이지로 안가고 바로 로그아웃하게됨
+
 
 #Email settings
 
