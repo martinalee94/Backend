@@ -154,7 +154,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SESSION_REMEMBER = True #브라우저를 꺼도 유저를 계속 기억함
 #SESSION_COOKIE_AGE = 3600 #세션 유지기간
 #python manage.py clearsessions로 서버에 쌓인 세션을 수동으로 지워주는 명령어
-
+ACCOUNT_SIGNUP_FORM_CLASS = 'coplate.forms.SignupForm'
 
 #Email settings
 

@@ -10,7 +10,7 @@
 <h1>Homepage</h1>
 
 {% if user.is_authenticated %}
-<p>안녕하세요 {{user}}님!</p>
+<p>안녕하세요 {{user.nickname}}님!</p>
 {% else %}
 <p>로그아웃된 상태입니다.</p>
 {% endif %}
